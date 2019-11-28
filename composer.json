@@ -1,0 +1,28 @@
+{
+  "name": "kolbasyatin/php-mpd-client",
+  "description": "Light MPD client",
+  "homepage": "http://mds.planeset.ru",
+  "license": "MIT",
+  "require": {
+    "php": "^7.3",
+    "ext-sockets": "*"
+  },
+  "authors": [
+    {
+      "name": "Alexandr Zavalyuk",
+      "email": "zalex@zalex.com.ua"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Kolbasyatin\\MPD\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "phpunit/phpunit": "^9.0@dev"
+  }
+}

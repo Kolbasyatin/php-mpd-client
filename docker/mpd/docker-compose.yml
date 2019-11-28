@@ -1,0 +1,13 @@
+mpd:
+  image: vitiman/alpine-mpd
+  container_name: mpd
+  ports:
+    - "6600:6600"
+    - "8800:8800"
+  volumes:
+    - ./mpd.conf:/etc/mpd.conf
+    - ./music:/var/lib/mpd/music
+    - ./playlists:/var/lib/mpd/playlists
+  devices:
+    - /dev/snd
+#  restart: always

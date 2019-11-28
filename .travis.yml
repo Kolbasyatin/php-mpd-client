@@ -1,0 +1,27 @@
+language: php
+sudo: required
+services:
+  - docker
+
+matrix:
+  include:
+    - php: '7.3'
+    - php: '7.4'
+    - php: 'nightly'
+  allow_failures:
+    - php: 'nightly'
+
+before_install:
+  - cd docker/mpd
+  - docker pull vitiman/alpine-mpd
+  - docker-compose up -d
+  - cd ../..
+install:
+  - composer install
+
+script:
+  - ./vendor/bin/phpunit
+
+after_script:
+  - cd docker/mpd
+  - docker logs mpd
