@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Kolbasyatin/PHP-MPD-CLIENT.svg?branch=master)](https://travis-ci.com/Kolbasyatin/PHP-MPD-CLIENT)
+
 ##PHP-MPD-CLIENT
 
 - - -
