@@ -10,8 +10,15 @@ use Kolbasyatin\MPD\MPD\MPDClient;
 use Kolbasyatin\MPD\MPD\MPDConnection;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class MPDClientTest
+ * @package Kolbasyatin\MPD\TESTS\MPD
+ */
 class MPDClientTest extends TestCase
 {
+    /**
+     *
+     */
     public function testSuccessCommand(): void
     {
         $data = ['fake result', 'OK fake result answer'];
@@ -38,7 +45,6 @@ class MPDClientTest extends TestCase
         $client = new MpdClient($connection);
         $this->expectException(MPDConnectionException::class);
         $client->status();
-
     }
 
     public function testFailedCommand(): void
@@ -100,11 +106,13 @@ class MPDClientTest extends TestCase
         $values = $this->getValuesAsArray($actual);
         $this->assertEquals('stop', $values['state']);
         $this->assertEquals('0', $values['repeat']);
-
-        $client->disconnect();
-
     }
 
+
+    /**
+     * @param array $answer
+     * @return array
+     */
     private function getValuesAsArray(array $answer): array
     {
         return array_merge(

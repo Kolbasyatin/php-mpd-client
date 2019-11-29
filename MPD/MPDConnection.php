@@ -6,6 +6,10 @@ namespace Kolbasyatin\MPD\MPD;
 
 use Kolbasyatin\MPD\MPD\Exceptions\MPDConnectionException;
 
+/**
+ * Class MPDConnection
+ * @package Kolbasyatin\MPD\MPD
+ */
 class MPDConnection
 {
     /**
@@ -48,7 +52,6 @@ class MPDConnection
         $this->sendQuestion($command);
 
         return $this->receiveAnswer();
-
     }
 
 
@@ -59,8 +62,7 @@ class MPDConnection
     {
         return $this->socket
             && get_resource_type($this->socket) === 'Socket'
-            && socket_last_error($this->socket) === 0
-            ;
+            && socket_last_error($this->socket) === 0;
     }
 
     /**
@@ -150,6 +152,5 @@ class MPDConnection
     private function checkIfAnswerGotten(string $answer): bool
     {
         return (strncmp('OK', $answer, strlen('OK')) === 0) || (strncmp('ACK', $answer, strlen('ACK')) === 0);
-
     }
 }

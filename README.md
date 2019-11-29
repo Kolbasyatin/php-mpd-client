@@ -24,10 +24,34 @@ $connection = new MPDConnection('localhost:6600', 'yourpassword');
 $client = new MPDClient($connection);
 
 $client->play();
- 
+$client->status();
+
+```
+The answer is array in this case.
+
+You can add custom answer format by adding to `MPDClient` constructor the object instance which implements `MPDAnswerInterface`.
+There is one simple Answer now.
+
+```php
+use Kolbasyatin\MPD\MPD\MPDClient;
+use Kolbasyatin\MPD\MPD\MPDConnection;
+use Kolbasyatin\MPD\MPD\Answers\SimpleAnswer;
+
+
+$connection = new MPDConnection('localhost:6600', 'yourpassword');
+$answer = new SimpleAnswer();
+$client = new MPDClient($connection, $answer);
+
+$client->play();
+$answer = $client->status();
 ```
 
-When error happens, there is `MPDClientException` throws. 
+Answer's methods see in SimpleAnswer class.
+
+
+When error happens, there is `MPDClientException` throws in no answer case.
+If answer exists, you can check answer status by `$answer->getStatus()` 
+or see error message by `$answer->getError()` 
 
 
 That it is.
