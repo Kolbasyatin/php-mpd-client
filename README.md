@@ -5,7 +5,7 @@
 - - -
 \#what is it?
 
-This is a simple php [mpd] [1] client 
+This is a simple php [mpd][1] client 
 
 ##### How to install
 - - -
@@ -58,7 +58,7 @@ That it is.
 
 ##### Commands list
 - - -
- [Here] [2] is commands list, or you can see them in MPDClient class.
+ [Here][2] is commands list, or you can see them in MPDClient class.
  
 
 ##### Testing
