@@ -1,18 +1,18 @@
 [![Build Status](https://travis-ci.com/Kolbasyatin/PHP-MPD-CLIENT.svg?branch=master)](https://travis-ci.com/Kolbasyatin/PHP-MPD-CLIENT)
 
-##PHP-MPD-CLIENT
+## PHP-MPD-CLIENT
 
 - - -
 \#what is it?
 
 This is a simple php [mpd] [1] client 
 
-#####How to install
+##### How to install
 - - -
 
 `composer require kolbasyatin/php-mpd-client`
 
-#####How to use
+##### How to use
 - - -
 
 ```php
@@ -56,12 +56,12 @@ or see error message by `$answer->getError()`
 
 That it is.
 
-#####Commands list
+##### Commands list
 - - -
  [Here] [2] is commands list, or you can see them in MPDClient class.
  
 
-#####Testing
+##### Testing
 - - -
 
 Before launch `phpunit` you must start docker container.
