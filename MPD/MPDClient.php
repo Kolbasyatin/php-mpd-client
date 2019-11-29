@@ -3,6 +3,7 @@
 
 namespace Kolbasyatin\MPD\MPD;
 
+use Kolbasyatin\MPD\MPD\Answers\MPDAnswerInterface;
 use Kolbasyatin\MPD\MPD\Exceptions\MPDClientException;
 use function in_array;
 
@@ -109,6 +110,7 @@ use function in_array;
  */
 class MPDClient
 {
+    /** @var array */
     private const COMMAND_LIST = [
         'add',
         'addid',
@@ -209,28 +211,57 @@ class MPDClient
 
     /** @var MPDConnection */
     private $connection;
+    /**
+     * @var MPDAnswerInterface|null
+     */
+    private $answer;
 
     /**
      * MpdClient constructor.
      * @param MPDConnection $connection
+     * @param MPDAnswerInterface|null $answer
      */
-    public function __construct(MPDConnection $connection)
+    public function __construct(MPDConnection $connection, ?MPDAnswerInterface $answer = null)
     {
         $this->connection = $connection;
+        $this->answer = $answer;
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return array|MPDAnswerInterface
+     * @throws MPDClientException
+     */
+    public function __call($name, $arguments)
+    {
+        if (null === $this->answer) {
+            return $this->doCall($name, $arguments);
+        }
+
+        $answer = clone $this->answer;
+        try {
+            $result = $answer->createSuccess($this->doCall($name, $arguments), $name, $arguments);
+        } catch (MPDClientException $e) {
+            $result = $answer->createError($e, $name, $arguments);
+        }
+
+        return $result;
     }
 
     /**
      * @param $name
      * @param $arguments
      * @return array
+     * @throws Exceptions\MPDConnectionException
      * @throws MPDClientException
      */
-    public function __call($name, $arguments): array
+    private function doCall($name, $arguments): array
     {
         if (!in_array($name, self::COMMAND_LIST, true)) {
             throw new MPDClientException(sprintf('There is no such command %s support yet.', $name));
         }
-        $command = $name.' '.implode(' ', $this->toStringFalseArgumets($arguments));
+        $command = $name.' '.implode(' ', $this->toStringFalseArguments($arguments));
         $result = $this->connection->send($command);
         $this->checkResult($result);
         array_pop($result);
@@ -238,12 +269,6 @@ class MPDClient
         return $result;
     }
 
-    public function disconnect()
-    {
-        if ($this->connection->isConnected()) {
-            $this->connection->disconnect();
-        }
-    }
 
     /**
      * @param array $data
@@ -259,12 +284,16 @@ class MPDClient
 
     }
 
-    private function toStringFalseArgumets(array $arguments)
+    /**
+     * @param array $arguments
+     * @return array
+     */
+    private function toStringFalseArguments(array $arguments): array
     {
         array_walk(
             $arguments,
             static function (&$argument) {
-                if (false ===  $argument) {
+                if (false === $argument) {
                     $argument = '0';
                 }
             }

@@ -8,12 +8,20 @@ use Kolbasyatin\MPD\MPD\Exceptions\MPDConnectionException;
 use Kolbasyatin\MPD\MPD\MPDConnection;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class MPDConnectionTest
+ * @package Kolbasyatin\MPD\TESTS\MPD
+ */
 class MPDConnectionTest extends TestCase
 {
+    /** @var string  */
     public const TEST_MPD_URL = 'localhost:6600';
-
+    /** @var string  */
     public const TEST_PASSWORD = 'testpassword';
 
+    /**
+     * @throws MPDConnectionException
+     */
     public function testConnection(): void
     {
         $url = self::TEST_MPD_URL;
@@ -31,6 +39,9 @@ class MPDConnectionTest extends TestCase
         $connection->disconnect();
     }
 
+    /**
+     * @throws MPDConnectionException
+     */
     public function testFailConnection(): void
     {
         $connection = new MPDConnection('localhost:9999');
