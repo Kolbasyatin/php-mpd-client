@@ -23,6 +23,9 @@ class MPDConnection
     /** @var string */
     private $password;
 
+    /** @var int */
+    private $socketTimeOut = 2;
+
     /**
      * MPDConnection constructor.
      * @param string $url
@@ -66,7 +69,7 @@ class MPDConnection
     }
 
     /**
-     *
+     * Close the socket
      */
     public function disconnect(): void
     {
@@ -76,14 +79,13 @@ class MPDConnection
     }
 
     /**
+     * Create, setup and connect
      * @throws MPDConnectionException
      */
     public function connect(): void
     {
         ['host' => $url, 'port' => $port] = parse_url($this->url);
-        $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, ['sec' => 2, 'usec' => 0]);
-        socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, ['sec' => 2, 'usec' => 0]);
+        $this->socketSetup();
         //** Sorry for the '@', no another way.  */
         if (false === @socket_connect($this->socket, $url, $port)) {
             throw new MPDConnectionException('No connection to url '.$url);
@@ -97,6 +99,30 @@ class MPDConnection
                 $this->disconnect();
                 throw new MPDConnectionException('Password is incorrect.');
             }
+        }
+    }
+
+    /**
+     * @throws MPDConnectionException
+     */
+    private function socketSetup(): void
+    {
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        if (null === $socket) {
+            throw new MPDConnectionException('Can\'t setup socket cause socket isn\'t created');
+        }
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ['sec' => $this->socketTimeOut, 'usec' => 0]);
+        socket_set_option($socket, SOL_SOCKET, SO_SNDTIMEO, ['sec' => $this->socketTimeOut, 'usec' => 0]);
+        $this->socket = $socket;
+    }
+
+    public function setSocketTimeOut(int $sec): void
+    {
+        if (!$this->isConnected()) {
+            $this->socketTimeOut = $sec;
+        }
+        if ($this->isConnected()) {
+            throw new MPDConnectionException('You can\'t set socket timeout while the connection is active');
         }
     }
 
@@ -144,7 +170,7 @@ class MPDConnection
                 return $result;
             }
         }
-        throw new MPDConnectionException('You never see this exception.');
+        throw new MPDConnectionException('You never will see this exception.');
     }
 
     /**

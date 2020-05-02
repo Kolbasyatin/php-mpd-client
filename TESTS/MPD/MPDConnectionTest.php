@@ -42,6 +42,21 @@ class MPDConnectionTest extends TestCase
     /**
      * @throws MPDConnectionException
      */
+    public function testSetTimeOut()
+    {
+        $url = self::TEST_MPD_URL;
+        $password = self::TEST_PASSWORD;
+        $connection = new MPDConnection($url, $password);
+        $connection->setSocketTimeOut(5);
+        $connection->connect();
+        $this->expectExceptionMessage("You can't set socket timeout while the connection is active");
+        $connection->setSocketTimeOut(2);
+        $connection->disconnect();
+    }
+
+    /**
+     * @throws MPDConnectionException
+     */
     public function testFailConnection(): void
     {
         $connection = new MPDConnection('localhost:9999');
