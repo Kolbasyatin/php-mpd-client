@@ -21,8 +21,8 @@
       "/Tests/"
     ]
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "require-dev": {
-    "phpunit/phpunit": "^9.0@dev"
+    "phpunit/phpunit": "^9.0"
   }
 }
