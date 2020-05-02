@@ -3,7 +3,7 @@
 ## PHP-MPD-CLIENT
 
 - - -
-###What is it?
+### What is it?
 
 This is a simple php written [mpd][1] client library. 
 
@@ -78,7 +78,7 @@ $connection = new MPDConnection('localhost:6600', 'yourpassword');
 $connection->setSocketTimeOut(1);
 ``` 
 ---
-######Errors
+###### Errors
 
 When the error occurred, an `MPDClientException` will be thrown.
 
