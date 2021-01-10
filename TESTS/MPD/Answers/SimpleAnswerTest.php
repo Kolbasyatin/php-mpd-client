@@ -26,31 +26,31 @@ class SimpleAnswerTest extends TestCase
         $client->stop();
         /** @var SimpleAnswer $actual */
         $actual = $client->status();
-        $this->assertInstanceOf(SimpleAnswer::class, $actual);
-        $this->assertTrue($actual->getStatus(), 'Status is not true, as expected.');
-        $this->assertEquals('No error.', $actual->getError(), 'Error message wrong, as expected.');
-        $this->assertNotEmpty($actual->getDateTime());
-        $this->assertEquals('status', $actual->getCommand());
-        $this->assertNotEmpty($actual->getAnswerKeyList());
-        $this->assertNotEmpty($actual->getAnswerAsArray(), 'Data as array fetch error.');
-        $this->assertNotEmpty($actual->getAnswerAsRaw(), 'Raw data fetch error.');
+        self::assertInstanceOf(SimpleAnswer::class, $actual);
+        self::assertTrue($actual->getStatus(), 'Status is not true, as expected.');
+        self::assertEquals('No error.', $actual->getError(), 'Error message wrong, as expected.');
+        self::assertNotEmpty($actual->getDateTime());
+        self::assertEquals('status', $actual->getCommand());
+        self::assertNotEmpty($actual->getAnswerKeyList());
+        self::assertNotEmpty($actual->getAnswerAsArray(), 'Data as array fetch error.');
+        self::assertNotEmpty($actual->getAnswerAsRaw(), 'Raw data fetch error.');
 
         $this->dataFetchMethods($actual);
 
         $actual = $client->noSuchCommand();
-        $this->assertInstanceOf(SimpleAnswer::class, $actual);
+        self::assertInstanceOf(SimpleAnswer::class, $actual);
 
-        $this->assertFalse($actual->getStatus(), 'Status is not false, as expected.');
-        $this->assertEquals(
+        self::assertFalse($actual->getStatus(), 'Status is not false, as expected.');
+        self::assertEquals(
             'There is no such command noSuchCommand support yet.',
             $actual->getError(),
             'Error message wrong, as expected.'
         );
-        $this->assertNotEmpty($actual->getDateTime());
-        $this->assertEquals('noSuchCommand', $actual->getCommand());
-        $this->assertEmpty($actual->getAnswerKeyList());
-        $this->assertEmpty($actual->getAnswerAsArray(), 'Data as array fetch error.');
-        $this->assertEmpty($actual->getAnswerAsRaw(), 'Raw data fetch error.');
+        self::assertNotEmpty($actual->getDateTime());
+        self::assertEquals('noSuchCommand', $actual->getCommand());
+        self::assertEmpty($actual->getAnswerKeyList());
+        self::assertEmpty($actual->getAnswerAsArray(), 'Data as array fetch error.');
+        self::assertEmpty($actual->getAnswerAsRaw(), 'Raw data fetch error.');
     }
 
     /**
@@ -61,8 +61,8 @@ class SimpleAnswerTest extends TestCase
         $list = $answer->getAnswerKeyList();
         foreach ($list as $key) {
             $method = 'get'.ucfirst($key);
-            $this->assertIsString($answer->$method());
+            self::assertIsString($answer->$method());
         }
-        $this->assertNull($answer->getWrongData());
+        self::assertNull($answer->getWrongData());
     }
 }
