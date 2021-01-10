@@ -5,6 +5,7 @@ namespace Kolbasyatin\MPD\MPD;
 
 
 use Kolbasyatin\MPD\MPD\Exceptions\MPDConnectionException;
+use Socket;
 
 /**
  * Class MPDConnection
@@ -64,8 +65,17 @@ class MPDConnection
     public function isConnected(): bool
     {
         return $this->socket
-            && get_resource_type($this->socket) === 'Socket'
+            && $this->checkSocketResourceType()
             && socket_last_error($this->socket) === 0;
+    }
+
+    private function checkSocketResourceType(): bool
+    {
+        if (PHP_VERSION_ID < 80000) {
+            return get_resource_type($this->socket) === 'Socket';
+        }
+
+        return $this->socket instanceof Socket;
     }
 
     /**

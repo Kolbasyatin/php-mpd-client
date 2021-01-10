@@ -214,17 +214,17 @@ class MPDClient
     /**
      * @var MPDAnswerInterface|null
      */
-    private $answer;
+    private $answerObject;
 
     /**
      * MpdClient constructor.
      * @param MPDConnection $connection
-     * @param MPDAnswerInterface|null $answer
+     * @param MPDAnswerInterface|null $answerClass
      */
-    public function __construct(MPDConnection $connection, ?MPDAnswerInterface $answer = null)
+    public function __construct(MPDConnection $connection, ?MPDAnswerInterface $answerClass = null)
     {
         $this->connection = $connection;
-        $this->answer = $answer;
+        $this->answerObject = $answerClass;
     }
 
     /**
@@ -235,11 +235,11 @@ class MPDClient
      */
     public function __call($name, $arguments)
     {
-        if (null === $this->answer) {
+        if (null === $this->answerObject) {
             return $this->doCall($name, $arguments);
         }
 
-        $answer = clone $this->answer;
+        $answer = clone $this->answerObject;
         try {
             $result = $answer->createSuccess($this->doCall($name, $arguments), $name, $arguments);
         } catch (MPDClientException $e) {
