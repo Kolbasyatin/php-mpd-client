@@ -279,7 +279,7 @@ class MPDClient
         $answerString = end($data);
         $answer = substr($answerString, 0, 2);
         if ($answer !== 'OK') {
-            throw new MPDClientException($answer);
+            throw new MPDClientException($answerString);
         }
 
     }
