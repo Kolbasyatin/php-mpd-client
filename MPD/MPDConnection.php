@@ -173,9 +173,11 @@ class MPDConnection
      */
     private function receiveAnswer(): ?array
     {
+        $result = array();
         while ($this->isConnected()) {
-            $answer = socket_read($this->socket, 1024);
-            $result = explode("\n", trim($answer));
+            $answer = socket_read($this->socket, 4096, PHP_NORMAL_READ);
+            $tmpResult = explode("\n", trim($answer));
+            $result = array_merge($result,$tmpResult);
             if ($this->checkIfAnswerGotten(end($result))) {
                 return $result;
             }
